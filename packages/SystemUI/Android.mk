@@ -63,7 +63,9 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     apache-commons-lang-2.6 \
     trail-drawing \
     rebound \
-    guava
+    guava \
+    vendor.oneplus.fingerprint.extension-V1.0-java \
+    vendor.oneplus.hardware.display-V1.0-java
 
 LOCAL_JAVA_LIBRARIES := telephony-common \
     android.car \

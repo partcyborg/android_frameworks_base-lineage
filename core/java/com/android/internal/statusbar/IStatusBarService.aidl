@@ -114,4 +114,5 @@ interface IStatusBarService
     void toggleNavigationEditor();
     void dispatchNavigationEditorResults(in Intent intent);
     void toggleOrientationListener(boolean enable);
+    void handleInDisplayFingerprintView(boolean show, boolean isEnrolling);
 }
