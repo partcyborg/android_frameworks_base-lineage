@@ -30,6 +30,9 @@ import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.internal.statusbar.IStatusBarService;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+
+import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
 
 import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
 
@@ -78,12 +81,19 @@ public abstract class EnrollClient extends ClientMonitor {
         MetricsLogger.action(getContext(), MetricsEvent.ACTION_FINGERPRINT_ENROLL);
         try {
             receiver.onEnrollResult(getHalDeviceId(), fpId, groupId, remaining);
-            if(remaining == 0 && mDisplayFODView) {
+            if (remaining == 0 && mDisplayFODView) {
                 try {
                     mExtDaemon = IFingerprintInscreen.getService();
                     mExtDaemon.onFinishEnroll();
+                } catch (NoSuchElementException | RemoteException e) {
+                    // do nothing
+                }
+
+                try {
                     mStatusBarService.handleInDisplayFingerprintView(false, true);
-                } catch (RemoteException e) {}
+                } catch (RemoteException ex) {
+                    // do nothing
+                }
             }
             return remaining == 0;
         } catch (RemoteException e) {
@@ -105,8 +115,15 @@ public abstract class EnrollClient extends ClientMonitor {
             try {
                 mExtDaemon = IFingerprintInscreen.getService();
                 mExtDaemon.onStartEnroll();
+            } catch (NoSuchElementException | RemoteException e) {
+                // do nothing
+            }
+
+            try {
                 mStatusBarService.handleInDisplayFingerprintView(true, true);
-            } catch (RemoteException e) {}
+            } catch (RemoteException ex) {
+                // do nothing
+            }
         }
 
         final int timeout = (int) (ENROLLMENT_TIMEOUT_MS / MS_PER_SEC);
@@ -134,7 +151,9 @@ public abstract class EnrollClient extends ClientMonitor {
         if (mDisplayFODView) {
             try {
                 mStatusBarService.handleInDisplayFingerprintView(false, true);
-            } catch (RemoteException e) {}
+            } catch (RemoteException e) {
+                // do nothing
+            }
         }
 
         IBiometricsFingerprint daemon = getFingerprintDaemon();

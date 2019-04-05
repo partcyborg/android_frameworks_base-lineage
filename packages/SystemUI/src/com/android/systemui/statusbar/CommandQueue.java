@@ -906,6 +906,11 @@ public class CommandQueue extends IStatusBar.Stub {
                     Intent intent = (Intent) msg.obj;
                     for (int i = 0; i < mCallbacks.size(); i++) {
                         mCallbacks.get(i).dispatchNavigationEditorResults(intent);
+                case MSG_IN_DISPLAY_FINGERPRINT:
+                    for (int i = 0; i < mCallbacks.size(); i++) {
+                        mCallbacks.get(i).handleInDisplayFingerprintView(
+                                (boolean)((SomeArgs)msg.obj).arg1,
+                                (boolean)((SomeArgs)msg.obj).arg2);
                     }
                     break;
             }
