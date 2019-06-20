@@ -224,7 +224,7 @@ public class FODCircleView extends ImageView implements OnTouchListener {
         invalidate();
 
         if(!mInsideCircle) {
-            mParams.screenBrightness = .0f;
+            //mParams.screenBrightness = .0f;
             setImageResource(R.drawable.fod_icon_default);
             mParams.dimAmount = mIsDreaming ? UNTOUCHED_DOZE_DIM : UNTOUCHED_DIM;
             mWM.updateViewLayout(this, mParams);
@@ -233,7 +233,7 @@ public class FODCircleView extends ImageView implements OnTouchListener {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             setImageResource(R.drawable.fod_icon_empty);
             mParams.dimAmount = TOUCHED_DIM;
-            mParams.screenBrightness = 1.0f;
+            //mParams.screenBrightness = 1.0f;
             mWM.updateViewLayout(this, mParams);
         }
         return true;
