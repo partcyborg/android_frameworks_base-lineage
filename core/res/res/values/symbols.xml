@@ -3425,5 +3425,5 @@
 
   <!-- FoD -->
   <java-symbol type="bool" name="config_needCustomFODView" />
-  <java-symbol type="bool" name="config_usesOnePlusFOD" />
+
 </resources>
