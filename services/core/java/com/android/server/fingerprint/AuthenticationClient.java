@@ -18,7 +18,6 @@ package com.android.server.fingerprint;
 
 import android.content.Context;
 import android.content.ComponentName;
-import android.content.res.Resources;
 import android.hardware.biometrics.fingerprint.V2_1.IBiometricsFingerprint;
 import android.hardware.biometrics.BiometricPrompt;
 import android.hardware.biometrics.IBiometricPromptReceiver;
@@ -34,6 +33,8 @@ import android.util.Slog;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.internal.statusbar.IStatusBarService;
+
+import java.util.NoSuchElementException;
 
 import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
 
@@ -105,7 +106,8 @@ public abstract class AuthenticationClient extends ClientMonitor {
         mStatusBarService = statusBarService;
         mFingerprintManager = (FingerprintManager) getContext()
                 .getSystemService(Context.FINGERPRINT_SERVICE);
-        mDisplayFODView = context.getResources().getBoolean(com.android.internal.R.bool.config_needCustomFODView);
+        mDisplayFODView = context.getResources().getBoolean(
+                com.android.internal.R.bool.config_needCustomFODView);
         mKeyguardPackage = ComponentName.unflattenFromString(context.getResources().getString(
                 com.android.internal.R.string.config_keyguardComponent)).getPackageName();
     }
@@ -245,10 +247,12 @@ public abstract class AuthenticationClient extends ClientMonitor {
             resetFailedAttempts();
             onStop();
         }
-        if(result == true && mDisplayFODView) {
+        if (result && mDisplayFODView) {
             try {
                 mStatusBarService.handleInDisplayFingerprintView(false, false);
-            } catch (RemoteException e) {}
+            } catch (RemoteException e) {
+                // do nothing
+            }
         }
         return result;
     }
@@ -267,16 +271,16 @@ public abstract class AuthenticationClient extends ClientMonitor {
         if (mDisplayFODView) {
             try {
                 mExtDaemon = IFingerprintInscreen.getService();
-                Slog.w(TAG, "getOwnerString : " + isKeyguard(getOwnerString()));
+                mExtDaemon.setLongPressEnabled(isKeyguard(getOwnerString()));
+            } catch (NoSuchElementException | RemoteException e) {
+                // do nothing
+            }
 
-                if (isKeyguard(getOwnerString())) {
-                    mExtDaemon.setLongPressEnabled(true);
-                } else {
-                    mExtDaemon.setLongPressEnabled(false);
-                }
-
+            try {
                 mStatusBarService.handleInDisplayFingerprintView(true, false);
-            } catch (RemoteException e) {}
+            } catch (RemoteException ex) {
+                // do nothing
+            }
         }
         onStart();
         try {
@@ -322,7 +326,9 @@ public abstract class AuthenticationClient extends ClientMonitor {
         if (mDisplayFODView) {
             try {
                 mStatusBarService.handleInDisplayFingerprintView(false, false);
-            } catch (RemoteException e) {}
+            } catch (RemoteException e) {
+                // do nothing
+            }
         }
 
         onStop();
