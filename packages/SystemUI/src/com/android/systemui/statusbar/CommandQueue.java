@@ -795,14 +795,6 @@ public class CommandQueue extends IStatusBar.Stub {
                         mCallbacks.get(i).hideFingerprintDialog();
                     }
                     break;
-                case MSG_IN_DISPLAY_FINGERPRINT:
-                    for (int i = 0; i < mCallbacks.size(); i++) {
-                        mCallbacks.get(i).handleInDisplayFingerprintView(
-                                (boolean)((SomeArgs)msg.obj).arg1,
-                                (boolean)((SomeArgs)msg.obj).arg2);
-                    }
-
-                    break;
                 case MSG_SHOW_CHARGING_ANIMATION:
                     for (int i = 0; i < mCallbacks.size(); i++) {
                         mCallbacks.get(i).showWirelessChargingAnimation(msg.arg1);
