@@ -34,8 +34,6 @@ import java.util.NoSuchElementException;
 
 import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
 
-import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
-
 /**
  * A class to keep track of the enrollment state for a given client.
  */
