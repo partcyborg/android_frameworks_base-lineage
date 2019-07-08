@@ -1004,6 +1004,10 @@ public interface WindowManager extends ViewManager {
          * @hide
          */
         public static final int TYPE_SLIM_RECENTS = FIRST_SYSTEM_WINDOW+39;
+         * Special window type used for devices with in-display fingerprint scanner
+         * Shows on top of all other types of windows
+         */
+        public static final int TYPE_FINGERPRINT_ON_DISPLAY = FIRST_SYSTEM_WINDOW + 100;
 
         /**
          * End of types of system windows.
