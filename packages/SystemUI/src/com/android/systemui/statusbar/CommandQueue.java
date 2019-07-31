@@ -100,7 +100,7 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_TOGGLE_NAVIGATION_EDITOR      = 50 << MSG_SHIFT;
     private static final int MSG_DISPATCH_NAVIGATION_EDITOR_RESULTS = 51 << MSG_SHIFT;
     private static final int MSG_TOGGLE_PIE_ORIENTATION        = 52 << MSG_SHIFT;
-    private static final int MSG_IN_DISPLAY_FINGERPRINT        = 47 << MSG_SHIFT;
+    private static final int MSG_IN_DISPLAY_FINGERPRINT        = 53 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -860,7 +860,6 @@ public class CommandQueue extends IStatusBar.Stub {
                                 (boolean)((SomeArgs)msg.obj).arg1,
                                 (boolean)((SomeArgs)msg.obj).arg2);
                     }
-
                     break;
                 case MSG_SHOW_CHARGING_ANIMATION:
                     for (int i = 0; i < mCallbacks.size(); i++) {
@@ -906,12 +905,7 @@ public class CommandQueue extends IStatusBar.Stub {
                     Intent intent = (Intent) msg.obj;
                     for (int i = 0; i < mCallbacks.size(); i++) {
                         mCallbacks.get(i).dispatchNavigationEditorResults(intent);
-                case MSG_IN_DISPLAY_FINGERPRINT:
-                    for (int i = 0; i < mCallbacks.size(); i++) {
-                        mCallbacks.get(i).handleInDisplayFingerprintView(
-                                (boolean)((SomeArgs)msg.obj).arg1,
-                                (boolean)((SomeArgs)msg.obj).arg2);
-                    }
+                     }
                     break;
             }
         }
